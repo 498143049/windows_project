@@ -8,14 +8,15 @@
 #include <set>
 using namespace std;
 
-void robot(uint8_t task, int &count,vector<set<uint8_t>> &vs,vector<bool> &vt){
-    if(task==6){
-        count++;  //任务安排成功
+void robot(uint8_t num, int &count,vector<set<uint8_t>> &vs,vector<bool> &vt){
+    if(num==vs.size()){
+        count++;
+        return;
     }
-    for(int i=0;i<=vs.size();++i){
-        if(vt[i]== true&&vs[i].find(task)!=vs[i].end()){
+    for(auto i:vs[num]){
+        if(vt[i]){
             vt[i]=false;
-            robot(task+1,count,vs,vt);
+            robot(num+1,count,vs,vt);
             vt[i]=true;
         }
     }
@@ -27,7 +28,7 @@ int main() {
     int num;
     cin>>num;
     vector<set<uint8_t>> vset;
-    vector<bool> vti(num,true);
+    vector<bool> vti(6,true);
     while(num--){
         string s;
         cin>>s;
@@ -40,5 +41,4 @@ int main() {
     int count = 0;
     robot(0,count,vset,vti);
     cout<<count<<endl;
-
 }
