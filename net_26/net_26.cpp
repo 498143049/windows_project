@@ -1,39 +1,45 @@
-﻿//
-// Created by dubing on 2017/6/28.
-//
-#include<iostream>
-#include<vector>
-#include<algorithm>
-#include <climits>
-#include <set>
-#include <iterator>
+﻿#include <bits/stdc++.h>
 using namespace std;
-int robot(int num,long &target,vector<int> &vt){
-//    if(vt[num]!=0){
-//        target=target-
-//    }
+
+int getorderpair(int arr[],int n,int num,int pos){
+    int sum=0;
+    for(int i=0;i<n;++i){
+        if (!arr[i]) continue;
+        sum+=((arr[i]<num && i<pos)||(arr[i]>num && i>pos));
+    }
+    return sum;
+}
+int getorderpairall(int arr[],int n){
+    int sum=0;
+    for(int i=0;i<n;++i){
+        if (!arr[i]) continue;
+        sum+=getorderpair(arr,n,arr[i],i);
+    }
+    return sum/2;   // each pair cal twice.
 }
 
-
-int main() {
-    freopen("../../net_26/data/a.in", "r", stdin); //输入重定向，输入数据将从in.txt文件中读取
-    int num; long count;
-    cin>>num>>count;
-    vector<int> vt(num);
-    set<int> st;
-    set<int> contain;
-    set<int> candicate;
-    for(int i=0;i<num;++i){
-        st.insert(i+1);
-        cin>>vt[i];
-        if(vt[i]!=0){
-            contain.insert(vt[i]);  //含有的集合
+int main(){
+    freopen("../../net_26/data/a.in", "r", stdin); //输入重定向，输入数据将从in.txt文件中读取 ，
+    int arr[100],can[10];           // missing num
+    unordered_set<int> s;
+    for(int n,k,c,base,ans;cin>>n>>k;c=0,s.clear()){
+        for(int i=ans=0;i<n;++i){
+            cin>>arr[i];
+            s.insert(arr[i]);
         }
+        for(int i=c=0;i<n;++i){      // find missing num
+            if (s.find(i+1)==s.end()) can[c++]=i+1;
+        }
+        int arrbase = getorderpairall(arr,n);
+        do{
+            int canbase = getorderpairall(can,c);
+            for(int i=base=0,j=0;i<n;++i){
+                if (arr[i]) continue;
+                base+=getorderpair(arr,n,can[j++],i);
+            }
+            if (arrbase+canbase+base==k) ++ans;
+        }while(next_permutation(can,can+c));
+        cout<<ans<<endl;
     }
-    set_difference(st.begin(),st.end(),contain.begin(),contain.end(),inserter(candicate,candicate.begin()));  //获取set后
-
-    for(int i=num-1;num>=0;num++){
-
-
-    }
+    return 0;
 }

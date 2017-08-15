@@ -10,13 +10,12 @@ using namespace std;
 class single{
 public:
     static single* getInstance() {
-       static  single instance; //将其放在栈上 由程序自动释放
+        static  single instance; //将其放在栈上 由程序自动释放
         return &instance;
     }
 
 private:
-    static  single * instance;
-    single(){}
+    single(){};
     single(single &){};
     single &operator=(const single&s){};
 
